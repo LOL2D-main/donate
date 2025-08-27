@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate - Ủng Hộ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Trang chủ */
+        .home-page {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .welcome-section {
+            background: rgba(255,255,255,0.95);
+            padding: 4rem 3rem;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            max-width: 600px;
+            margin: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .welcome-text h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        .welcome-text p {
+            font-size: 1.3rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .hero-images {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .hero-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            object-fit: cover;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .hero-img:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .donate-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 20px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .donate-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .donate-btn:hover:before {
+            left: 100%;
+        }
+
+        .donate-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.6);
+        }
+
+        .donate-btn:active {
+            transform: translateY(-2px);
+        }
+
+        /* Hiệu ứng trái tim */
+        .heart {
+            position: absolute;
+            color: #ff6b6b;
+            font-size: 20px;
+            pointer-events: none;
+            animation: floatHeart 3s ease-out forwards;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-200px) scale(0.3);
+            }
+        }
+
+        /* Form donate */
+        .donate-form {
+            display: none;
+            max-width: 500px;
+            margin: 2rem auto;
+            background: rgba(255,255,255,0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .form-page {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+ .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.05rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 18px 20px; /* to hơn */
+            border: 2px solid #e1e8ed;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            background: #fff;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 12px rgba(102, 126, 234, 0.35);
+            background: #fff;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f1f1f1;
+            color: #666;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* QR Page */
+        .qr-page {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            text-align: center;
+            padding: 2rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-container {
+            background: rgba(255,255,255,0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            max-width: 400px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .user-info {
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .user-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .user-info p {
+            color: #666;
+            font-style: italic;
+        }
+
+        .qr-image {
+            width: 250px;
+            height: 250px;
+            margin: 1rem auto;
+            border: 3px solid #4CAF50;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: block;
+        }
+
+        .qr-image:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal QR phóng to */
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .qr-modal img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Popup thành công/thất bại */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            position: relative;
+            animation: popupShow 0.5s ease-out;
+        }
+
+        @keyframes popupShow {
+            0% {
+                transform: scale(0.5) rotate(180deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .popup-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .success-icon {
+            color: #4CAF50;
+        }
+
+        .cancel-icon {
+            color: #ff6b6b;
+        }
+
+        .popup h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .popup p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Pháo hoa */
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: fireworkExplode 1s ease-out;
+        }
+
+        @keyframes fireworkExplode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .welcome-text h1 {
+                font-size: 2rem;
+            }
+            
+            .welcome-section {
+                margin: 1rem;
+                padding: 2rem 1.5rem;
+            }
+            
+            .donate-form {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .qr-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .qr-image {
+                width: 200px;
+                height: 200px;
+            }
+
+            .hero-images {
+                gap: 0.5rem;
+            }
+
+            .hero-img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Trang chủ -->
+    <div id="homePage" class="home-page">
+        <div class="welcome-section">
+            <div class="welcome-text">
+                <h1>💝 Chào Mừng Bạn Đến Website</h1>
+                <!--Ngắn thôi đừng dài quá-->
+                <p></p>
+            </div>
+            
+            <div class="hero-images">
+                <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&w=400&q=80" alt="Coffee" class="hero-img">
+                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&w=400&q=80" alt="Work" class="hero-img">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&w=400&q=80" alt="Tech" class="hero-img">
+            </div>
+            
+            <h2 style="color: #333; margin: 2rem 0 1rem 0; font-size: 1.8rem;">Ủng Hộ Chúng Tôi</h2>
+            <p style="color: #666; margin-bottom: 2rem;">Mọi đóng góp sẽ giúp website phát triển hơn ❤️</p>
+            
+            <button class="donate-btn" onclick="showDonateForm()">
+                ❤️ DONATE NGAY
+            </button>
+        </div>
+    </div>
+
+    <!-- Form nhập thông tin -->
+    <div id="donateForm" class="donate-form">
+        <h2 style="text-align: center; margin-bottom: 2rem; color: #333;">Thông Tin Donate</h2>
+        
+        <div class="form-group">
+            <label for="donorName">Tên của bạn:</label>
+            <input type="text" id="donorName" placeholder="Nhập tên của bạn..." required>
+        </div>
+        
+        <div class="form-group">
+            <label for="donorMessage">Lời nhắn:</label>
+            <textarea id="donorMessage" rows="4" placeholder="Để lại lời nhắn..."></textarea>
+        </div>
+        
+        <div class="form-buttons">
+            <button class="btn btn-primary" onclick="showQRPage()">Donate</button>
+            <button class="btn btn-secondary" onclick="cancelDonate()">Hủy</button>
+        </div>
+    </div>
+
+    <!-- Trang QR -->
+    <div id="qrPage" class="qr-page">
+        <div class="qr-container">
+            <div class="user-info">
+                <h3 id="displayName">Tên người donate</h3>
+                <p id="displayMessage">Lời nhắn</p>
+            </div>
+            
+            <img src="/qr.png" 
+                 alt="QR Code" 
+                 class="qr-image" 
+                 onclick="openQRModal()">
+            
+            <div class="form-buttons">
+                <button class="btn btn-primary" onclick="completeDonate()">Xong</button>
+                <button class="btn btn-secondary" onclick="cancelFromQR()">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal QR phóng to -->
+    <div id="qrModal" class="qr-modal">
+        <div class="qr-modal-content">
+            <span class="close-modal" onclick="closeQRModal()">&times;</span>
+            <img src="/qr.png" alt="QR Code">
+        </div>
+    </div>
+
+    <!-- Popup thành công -->
+    <div id="successPopup" class="popup-overlay">
+        <div class="popup">
+            <span class="popup-icon success-icon">✓</span>
+            <h3>Cảm ơn bạn!</h3>
+            <p>Đã nhận được thông tin donate của bạn. Cảm ơn sự ủng hộ!</p>
+        </div>
+    </div>
+
+    <!-- Popup hủy -->
+    <div id="cancelPopup" class="popup-overlay">
+        <div class="popup">
+            <span class="popup-icon cancel-icon">💝</span>
+            <h3>Không sao cả!</h3>
+            <p>Cảm ơn bạn đã ghé thăm. Hẹn gặp lại bạn lần sau nhé! 💕</p>
+        </div>
+    </div>
+
+    <script>
+        let donorInfo = {
+            name: '',
+            message: ''
+        };
+
+        // Hiệu ứng trái tim khi click donate
+        function createHearts(element) {
+            for (let i = 0; i < 6; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.innerHTML = '❤️';
+                    heart.style.left = (element.offsetLeft + Math.random() * element.offsetWidth) + 'px';
+                    heart.style.top = (element.offsetTop + element.offsetHeight/2) + 'px';
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+
+        // Hiển thị form donate
+        function showDonateForm() {
+            const donateBtn = document.querySelector('.donate-btn');
+            createHearts(donateBtn);
+            
+            setTimeout(() => {
+                document.getElementById('homePage').style.display = 'none';
+                document.body.innerHTML += '<div id="formPage" class="form-page"></div>';
+                document.getElementById('formPage').appendChild(document.getElementById('donateForm'));
+                document.getElementById('donateForm').style.display = 'block';
+                document.getElementById('donateForm').style.opacity = '0';
+                document.getElementById('donateForm').style.transform = 'translateY(50px)';
+                
+                setTimeout(() => {
+                    document.getElementById('donateForm').style.transition = 'all 0.5s ease';
+                    document.getElementById('donateForm').style.opacity = '1';
+                    document.getElementById('donateForm').style.transform = 'translateY(0)';
+                }, 50);
+            }, 300);
+        }
+
+        // Hiển thị trang QR
+        function showQRPage() {
+            const name = document.getElementById('donorName').value.trim();
+            const message = document.getElementById('donorMessage').value.trim();
+            
+            if (!name) {
+                alert('Vui lòng nhập tên của bạn!');
+                return;
+            }
+            
+            donorInfo.name = name;
+            donorInfo.message = message || 'Không có lời nhắn';
+            
+            document.getElementById('displayName').textContent = name;
+            document.getElementById('displayMessage').textContent = donorInfo.message;
+            
+            const formPage = document.getElementById('formPage');
+            if (formPage) formPage.remove();
+            document.getElementById('qrPage').style.display = 'flex';
+        }
+
+        // Mở modal QR phóng to
+        function openQRModal() {
+            document.getElementById('qrModal').style.display = 'flex';
+        }
+
+        // Đóng modal QR
+        function closeQRModal() {
+            document.getElementById('qrModal').style.display = 'none';
+        }
+
+        // Hoàn thành donate
+        async function completeDonate() {
+            try {
+                // Gửi thông tin qua Discord webhook
+                const webhookUrl = 'https://discord.com/api/webhooks/1410176881550037042/3UZ51EvPuKmoJnwFApMztsod1rMghT0lWUhWKmrBOEpw7XI7g8LVEpvLy2X0ce-T6Cd9';
+                
+                const embed = {
+                    title: "💝 Thông Tin Donate Mới",
+                    color: 0x00ff00,
+                    fields: [
+                        {
+                            name: "👤 Tên người donate",
+                            value: donorInfo.name,
+                            inline: true
+                        },
+                        {
+                            name: "💬 Lời nhắn",
+                            value: donorInfo.message,
+                            inline: false
+                        }
+                    ],
+                    timestamp: new Date().toISOString()
+                };
+
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        embeds: [embed]
+                    })
+                });
+                
+            } catch (error) {
+                console.log('Webhook error:', error);
+            }
+            
+            // Hiển thị popup thành công
+            document.getElementById('qrPage').style.display = 'none';
+            document.getElementById('successPopup').style.display = 'flex';
+            
+            // Tạo pháo hoa
+            createFireworks();
+            
+            // Tự động đóng popup và quay về trang chủ
+            setTimeout(() => {
+                document.getElementById('successPopup').style.display = 'none';
+                resetToHome();
+            }, 3000);
+        }
+
+        // Hủy từ form
+        function cancelDonate() {
+            const formPage = document.getElementById('formPage');
+            if (formPage) formPage.remove();
+            document.getElementById('cancelPopup').style.display = 'flex';
+            
+            setTimeout(() => {
+                document.getElementById('cancelPopup').style.display = 'none';
+                resetToHome();
+            }, 3000);
+        }
+
+        // Hủy từ trang QR
+        function cancelFromQR() {
+            document.getElementById('qrPage').style.display = 'none';
+            document.getElementById('cancelPopup').style.display = 'flex';
+            
+            setTimeout(() => {
+                document.getElementById('cancelPopup').style.display = 'none';
+                resetToHome();
+            }, 3000);
+        }
+
+        // Reset về trang chủ
+        function resetToHome() {
+            document.getElementById('homePage').style.display = 'flex';
+            document.getElementById('donorName').value = '';
+            document.getElementById('donorMessage').value = '';
+            donorInfo = { name: '', message: '' };
+        }
+
+        // Tạo pháo hoa
+        function createFireworks() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    firework.style.left = Math.random() * window.innerWidth + 'px';
+                    firework.style.top = Math.random() * window.innerHeight + 'px';
+                    document.body.appendChild(firework);
+                    
+                    setTimeout(() => {
+                        firework.remove();
+                    }, 1000);
+                }, i * 50);
+            }
+        }
+
+        // Đóng modal khi click bên ngoài
+        document.getElementById('qrModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeQRModal();
+            }
+        });
+
+        // Xử lý phím ESC để đóng modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeQRModal();
+            }
+        });
+    </script>
+</body>
+</html>
